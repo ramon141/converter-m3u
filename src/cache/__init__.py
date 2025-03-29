@@ -1,0 +1,1 @@
+# Este arquivo torna o diretório cache um pacote Python 

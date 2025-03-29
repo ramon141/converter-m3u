@@ -1,0 +1,15 @@
+# Ambiente
+.env
+
+# Cache
+cache_ids.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+*.json
+*.m3u
