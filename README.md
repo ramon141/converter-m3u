@@ -101,10 +101,20 @@ O sistema trata automaticamente vários casos especiais que podem ocorrer nos no
    - Ex: "Tarzan 1999" → Extrai o ano e tenta buscar com o filtro de ano
    - Detecta anos entre 1900 e 2099 usando regex
 
+## Sistema de Cache
+
+O sistema utiliza um mecanismo de cache eficiente para evitar requisições repetidas à API:
+
+- O cache é atualizado regularmente durante o processamento, não apenas no final
+- Utiliza um sistema de buffer que salva o arquivo depois de um número definido de alterações
+- Também salva automaticamente depois de um intervalo de tempo, mesmo que o número de alterações não tenha sido atingido
+- Inclui proteção para acesso concorrente em ambientes multi-thread
+- Garante que todas as alterações sejam salvas, mesmo em caso de interrupção do programa
+
 ## Como Funciona
 
 1. O programa lê um arquivo M3U contendo entradas de filmes e séries.
 2. Para cada entrada, ele limpa o nome e identifica se é uma série ou filme.
 3. Usando a API do TMDb, o programa busca o IMDb ID correspondente.
 4. Os resultados são salvos em um arquivo JSON.
-5. Um cache é utilizado para evitar requisições repetidas à API. 
+5. Um cache é utilizado para evitar requisições repetidas à API, sendo atualizado durante o processamento. 

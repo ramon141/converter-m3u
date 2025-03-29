@@ -33,6 +33,7 @@ class MediaProcessor:
         
         if imdb_id:
             # Atualiza o cache e a entrada
+            # O cache é atualizado e salvo periodicamente quando set_id é chamado
             self.cache_manager.set_id(name, imdb_id)
             entry.set_imdb_id(imdb_id)
             return entry
@@ -55,7 +56,7 @@ class MediaProcessor:
                 if result:
                     valid_entries.append(result)
         
-        # Salva o cache atualizado
-        self.cache_manager.save_cache()
+        # Forçar o salvamento do cache ao final do processamento
+        self.cache_manager.save_cache(force=True)
         
         return valid_entries 
