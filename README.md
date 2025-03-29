@@ -72,6 +72,35 @@ Ou use os valores padrão (input.m3u e output.json):
 python main.py
 ```
 
+### Opções Adicionais
+
+- **Modo Verboso**: Mostra logs detalhados durante o processamento
+  ```bash
+  python main.py -v
+  ```
+
+- **Modo de Teste**: Executa o programa com casos de teste para verificar o funcionamento
+  ```bash
+  python main.py -t
+  ```
+
+- **Modo de Teste Verboso**: Combina o modo de teste com logs detalhados
+  ```bash
+  python main.py -t -v
+  ```
+
+## Tratamento de Casos Especiais
+
+O sistema trata automaticamente vários casos especiais que podem ocorrer nos nomes dos filmes:
+
+1. **Filmes com número "1" no final**: 
+   - Ex: "Hotel Transylvania 1" → Tenta primeiro com o "1" e depois sem
+   - Aplicado a: "Irmao Urso 1", "O Reino Gelado 1", "Shrek 1", etc.
+
+2. **Filmes com anos no título**:
+   - Ex: "Tarzan 1999" → Extrai o ano e tenta buscar com o filtro de ano
+   - Detecta anos entre 1900 e 2099 usando regex
+
 ## Como Funciona
 
 1. O programa lê um arquivo M3U contendo entradas de filmes e séries.

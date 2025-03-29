@@ -8,9 +8,10 @@ class MediaProcessor:
     """
     Classe para processar entradas de mídia e buscar os IMDb IDs
     """
-    def __init__(self):
-        self.tmdb_client = TMDbClient()
+    def __init__(self, verbose=False):
+        self.tmdb_client = TMDbClient(verbose=verbose)
         self.cache_manager = CacheManager()
+        self.verbose = verbose
     
     def _process_entry(self, entry):
         """
@@ -22,6 +23,8 @@ class MediaProcessor:
         # Verifica se já temos o ID no cache
         if self.cache_manager.has_id(name):
             imdb_id = self.cache_manager.get_id(name)
+            if self.verbose:
+                print(f"Usando IMDb ID do cache para: {name}")
             entry.set_imdb_id(imdb_id)
             return entry
         
