@@ -25,19 +25,30 @@ class MediaProcessor:
             imdb_id = self.cache_manager.get_id(name)
             if self.verbose:
                 print(f"Usando IMDb ID do cache para: {name}")
-            entry.set_imdb_id(imdb_id)
-            return entry
+            
+            # Se o ID no cache não for None, atualiza a entrada
+            if imdb_id is not None:
+                entry.set_imdb_id(imdb_id)
+                return entry
+            
+            # Se o ID no cache for None, significa que já buscamos e não encontramos
+            # então retorna None para não incluir no resultado
+            if self.verbose:
+                print(f"ID no cache é null para: {name}, já buscado anteriormente")
+            return None
         
         # Busca o IMDb ID na API
         imdb_id = self.tmdb_client.get_imdb_id(name, is_series)
         
+        # Atualiza o cache em todos os casos, mesmo quando o ID não for encontrado
+        self.cache_manager.set_id(name, imdb_id)
+        
+        # Se encontrou o ID, atualiza a entrada e retorna
         if imdb_id:
-            # Atualiza o cache e a entrada
-            # O cache é atualizado e salvo periodicamente quando set_id é chamado
-            self.cache_manager.set_id(name, imdb_id)
             entry.set_imdb_id(imdb_id)
             return entry
         
+        # Não encontrou o ID, então não inclui no resultado
         return None
     
     def process_entries(self, entries):
