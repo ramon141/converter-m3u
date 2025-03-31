@@ -8,5 +8,5 @@ __pycache__/
 *.so
 .Python
 venv/
-*.json
 *.m3u
+files.json
