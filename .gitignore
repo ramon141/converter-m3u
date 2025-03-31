@@ -1,9 +1,6 @@
 # Ambiente
 .env
 
-# Cache
-cache_ids.json
-
 # Python
 __pycache__/
 *.py[cod]
