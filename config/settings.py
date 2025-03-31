@@ -26,4 +26,4 @@ DEFAULT_LANGUAGE = "pt-br"
 
 # Configurações de requisição
 MAX_RETRIES = 5
-MAX_WORKERS = 5 
+MAX_WORKERS = 3 

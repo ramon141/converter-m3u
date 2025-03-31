@@ -124,14 +124,35 @@ class TMDbClient:
             return [name, base_name]  # Tenta primeiro com o 1, depois sem
         return [name]  # Se não se aplica a regra, retorna só o nome original
     
+    def _remove_4k(self, name):
+        """
+        Remove o sufixo 4K do nome do filme
+        
+        Args:
+            name (str): Nome do filme
+            
+        Returns:
+            tuple: (Nome sem 4K, Booleano indicando se a remoção ocorreu)
+        """
+        # Verifica se termina com " 4K" ou similar
+        if re.search(r'\s+4K$', name, re.IGNORECASE):
+            clean_name = re.sub(r'\s+4K$', '', name, flags=re.IGNORECASE).strip()
+            if self.verbose:
+                print(f"Detectado filme em 4K: '{name}' -> '{clean_name}'")
+            return clean_name, True
+        return name, False
+    
     def get_imdb_id(self, name, is_series=False):
         """
         Obtém o IMDb ID para um filme ou série,
-        tratando casos especiais como filmes com "1" no final
-        e filmes com anos no título
+        tratando casos especiais como filmes com "1" no final,
+        filmes com anos no título e filmes com "4K" no final.
         """
+        # Primeiro remove o 4K, se presente
+        name_without_4k, has_4k = self._remove_4k(name)
+        
         # Extrai o ano se presente
-        clean_name, year = self._extract_year(name)
+        clean_name, year = self._extract_year(name_without_4k)
         
         # Se for série, não aplica as regras especiais
         if is_series:
@@ -144,7 +165,7 @@ class TMDbClient:
         for variant in name_variants:
             imdb_id = self._search_with_alternatives(variant, is_series, year)
             if imdb_id:
-                if self.verbose and variant != name:
+                if self.verbose and (variant != name or has_4k):
                     print(f"Encontrado IMDb ID para '{variant}' em vez de '{name}'")
                 return imdb_id
                 
